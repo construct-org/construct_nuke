@@ -6,6 +6,7 @@ __all__ = [
 ]
 
 import os
+from distutils.sysconfig import get_python_lib
 from construct.tasks import (
     task,
     requires,
@@ -24,8 +25,7 @@ def setup_construct_nuke(app):
     pypath = os.pathsep.join([
         nuke_path,
         app.env.get('PYTHONPATH', ''),
-        os.path.join(os.path.dirname(__file__), '..')
+        get_python_lib()
     ])
     app.env['NUKE_PATH'] = nuke_path
     app.env['PYTHONPATH'] = pypath
-
