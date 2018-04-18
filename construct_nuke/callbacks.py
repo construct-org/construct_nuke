@@ -12,7 +12,6 @@ def on_script_save():
 
     import nuke
     _log.debug('on_script_save')
-    # TODO: Check save path
     set_context_to_nuke_script()
     set_favorite_dirs()
 
