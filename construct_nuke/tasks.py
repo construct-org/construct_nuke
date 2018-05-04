@@ -22,10 +22,12 @@ from construct.tasks import (
 def setup_construct_nuke(app):
 
     nuke_path = os.path.join(os.path.dirname(__file__), '.nuke')
+    old_pypath = app.env.get('PYTHONPATH', '')
     pypath = os.pathsep.join([
         nuke_path,
-        app.env.get('PYTHONPATH', ''),
         get_python_lib()
     ])
+    if old_pypath:
+        pypath += os.pathsep + old_pypath
     app.env['NUKE_PATH'] = nuke_path
     app.env['PYTHONPATH'] = pypath

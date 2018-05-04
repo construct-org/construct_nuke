@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 import logging
-from construct_ui import ActionMenu
+from construct_ui.menus import ActionMenu
 from construct_nuke import callbacks
 from construct_nuke.ui import get_nuke_menubar
 
