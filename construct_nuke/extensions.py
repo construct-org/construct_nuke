@@ -46,11 +46,8 @@ class Nuke(HostExtension):
 
     def set_selection(self, selection):
         import nuke
-        # clear selection
         for node in self.get_selection():
             node.setSelected(False)
-
-        # set new selection
         for node in selection:
             node.setSelected(True)
 
@@ -66,18 +63,23 @@ class Nuke(HostExtension):
 
     def get_filename(self):
         import nuke
-        return os.path.dirname(nuke.root().name())
+        return dirname(nuke.root().name())
 
     def get_frame_range(self):
         import nuke
-        return nuke.root().firstFrame(), nuke.root().lastFrame()
+        root = nuke.root()
+        return root.firstFrame(), root.lastFrame()
 
     def set_frame_range(self, start_frame, end_frame):
         import nuke
-        pass
+        root = nuke.root()
+        root.knob('first_frame').setValue(start_frame)
+        root.knob('last_frame').setValue(end_frame)
 
     def get_qt_parent(self, widget_cls=None):
-        return None
+        from Qt import QtWidgets
+        from construct_nuke import ui
+        return ui.get_top_level_widget(QtWidgets.QMainWindow)
 
     def get_qt_loop(self):
         from Qt import QtWidgets
