@@ -11,7 +11,11 @@ from construct_nuke.tasks import (
 
 
 class Nuke(HostExtension):
-    '''Construct Nuke integration'''
+    '''Construct Nuke Host Extension
+
+    Implements the HostExtension Interface. Provides a default nuke workspace
+    template and a launch task.
+    '''
 
     name = 'Nuke'
     attr_name = 'nuke'
@@ -78,8 +82,9 @@ class Nuke(HostExtension):
 
     def get_qt_parent(self, widget_cls=None):
         from Qt import QtWidgets
-        from construct_nuke import ui
-        return ui.get_top_level_widget(QtWidgets.QMainWindow)
+        from construct_nuke import utils
+        widget_cls = widget_cls or QtWidgets.QMainWindow
+        return utils.get_top_level_widget(QtWidgets.QMainWindow)
 
     def get_qt_loop(self):
         from Qt import QtWidgets
