@@ -30,11 +30,12 @@ def set_context_to_nuke_script():
 
     import nuke
 
-    root = nuke.root()
-    name = root['name'].value()
-    path = os.path.dirname(name)
+    host = construct.get_host()
+    path = host.get_filepath()
 
     new_ctx = construct.Context.from_path(path)
+    new_ctx.file = path
+
     if new_ctx.workspace:
         _log.debug('Setting context to %s' % path)
         construct.set_context(new_ctx)

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 __all__ = ['Nuke']
 
-from os.path import join, dirname
+from os.path import join, dirname, basename
 from construct.extension import HostExtension
 from construct_nuke.tasks import (
     setup_construct_nuke
@@ -67,7 +67,7 @@ class Nuke(HostExtension):
 
     def get_filename(self):
         import nuke
-        return dirname(nuke.root().name())
+        return basename(nuke.root().name())
 
     def get_frame_range(self):
         import nuke
