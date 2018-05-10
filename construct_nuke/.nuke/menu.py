@@ -4,18 +4,16 @@ from __future__ import absolute_import
 import logging
 import construct
 from construct_ui import resources
-from construct_ui.menus import ActionMenu
-from construct_nuke import callbacks, utils
+from construct_nuke import callbacks, utils, menus
 
 _log = logging.getLogger('construct.nuke.menu')
+
 _log.debug('Registering callbacks')
 callbacks.register()
 callbacks.set_favorite_dirs()
 
 _log.debug('Creating Construct menu...')
-menubar = utils.get_nuke_menubar()
-menubar.addMenu(ActionMenu('Construct', menubar))
-
+menus.setup_construct_menu()
 
 if utils.show_file_open_at_startup():
     # TODO: Add abstraction around creating ActionForms

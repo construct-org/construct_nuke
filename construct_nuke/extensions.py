@@ -8,6 +8,7 @@ from construct.extension import HostExtension
 from construct_nuke.tasks import (
     setup_construct_nuke
 )
+from construct_launcher.constants import BEFORE_LAUNCH
 
 
 class Nuke(HostExtension):
@@ -26,18 +27,24 @@ class Nuke(HostExtension):
     def load(self):
 
         self.add_template_path(join(dirname(__file__), 'templates'))
-
-        # Extend cpenv_launcher to activate cpenv modules before launch
-        from construct_launcher.constants import BEFORE_LAUNCH
-
         self.add_task(
             'launch.nuke*',
             setup_construct_nuke,
             priority=BEFORE_LAUNCH
         )
 
+    def modified(self):
+        import nuke
+        return nuke.root().modified()
+
     def save_file(self, file):
         import nuke
+        from construct_ui.dialogs import ask
+
+        if self.modified():
+            if ask('Unsaved changes', 'Would you like to save?'):
+                nuke.scriptSave()
+
         nuke.scriptSaveAs(file)
 
     def open_file(self, file):
@@ -80,12 +87,10 @@ class Nuke(HostExtension):
         root.knob('first_frame').setValue(start_frame)
         root.knob('last_frame').setValue(end_frame)
 
-    def get_qt_parent(self, widget_cls=None):
+    def get_qt_parent(self):
         from Qt import QtWidgets
-        from construct_nuke import utils
-        widget_cls = widget_cls or QtWidgets.QMainWindow
-        return utils.get_top_level_widget(QtWidgets.QMainWindow)
+        app = QtWidgets.QApplication.instance()
 
-    def get_qt_loop(self):
-        from Qt import QtWidgets
-        return QtWidgets.QApplication.instance()
+        for widget in app.topLevelWidgets():
+            if isinstance(widget, QtWidgets.QMainWindow):
+                return widget
