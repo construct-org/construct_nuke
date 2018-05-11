@@ -28,12 +28,11 @@ def show_file_open_at_startup():
     '''Returns True when there will be no autosave dialog at startup.'''
 
     # Check if Nuke was launched with a nuke script as an argument
-    nuke_script = False
     for arg in sys.argv:
         if arg.endswith('.nk'):
-            nuke_script = True
+            return False
 
-    if nuke_script or has_untitled_autosave():
+    if has_untitled_autosave():
         return False
 
     return True
