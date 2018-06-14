@@ -7,6 +7,7 @@ from construct_ui import resources
 from construct_nuke import callbacks, utils, menus
 
 _log = logging.getLogger('construct.nuke.menu')
+resources.init()
 
 _log.debug('Registering callbacks')
 callbacks.register()
@@ -26,5 +27,5 @@ if utils.show_file_open_at_startup():
         parent = host.get_qt_parent()
         form_cls = construct.get_form(action.identifier)
         form = form_cls(action, ctx, parent)
-        form.setStyleSheet(resources.style('dark'))
+        form.setStyleSheet(resources.style(':/styles/dark'))
         form.show()
