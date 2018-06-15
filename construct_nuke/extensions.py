@@ -35,7 +35,10 @@ class Nuke(HostExtension):
 
     def modified(self):
         import nuke
-        return nuke.root().modified()
+        return (
+            nuke.root().modified() and
+            self.get_filename() != 'Root'
+        )
 
     def save_file(self, file):
         import nuke
