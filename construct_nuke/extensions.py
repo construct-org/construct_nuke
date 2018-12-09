@@ -42,12 +42,6 @@ class Nuke(HostExtension):
 
     def save_file(self, file):
         import nuke
-        from construct_ui.dialogs import ask
-
-        if self.modified():
-            if ask('Would you like to save?', title='Unsaved changes'):
-                nuke.scriptSave()
-
         nuke.scriptSaveAs(file)
 
     def open_file(self, file):
@@ -81,14 +75,21 @@ class Nuke(HostExtension):
 
     def get_frame_range(self):
         import nuke
+        viewer = nuke.activeViewer().node()
+        viewer_range = viewer.knob('frame_range').getValue()
+        start, end = [int(v) for v in viewer_range.split('-')]
         root = nuke.root()
-        return root.firstFrame(), root.lastFrame()
+        min = root.firstFrame()
+        max = root.lastFrame()
+        return min, start, end, max
 
-    def set_frame_range(self, start_frame, end_frame):
+    def set_frame_range(self, min, start, end, max):
         import nuke
         root = nuke.root()
-        root.knob('first_frame').setValue(start_frame)
-        root.knob('last_frame').setValue(end_frame)
+        root.knob('first_frame').setValue(min)
+        root.knob('last_frame').setValue(max)
+        viewer = nuke.activeViewer().node()
+        viewer['frame_range'].setValue('%d-%d' % (start, end))
 
     def get_qt_parent(self):
         from Qt import QtWidgets
