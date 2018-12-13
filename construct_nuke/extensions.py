@@ -53,7 +53,6 @@ class Nuke(HostExtension):
         return nuke.selectedNodes()
 
     def set_selection(self, selection):
-        import nuke
         for node in self.get_selection():
             node.setSelected(False)
         for node in selection:
@@ -90,6 +89,16 @@ class Nuke(HostExtension):
         root.knob('last_frame').setValue(max)
         viewer = nuke.activeViewer().node()
         viewer['frame_range'].setValue('%d-%d' % (start, end))
+
+    def get_frame_rate(self):
+        import nuke
+        root = nuke.root()
+        return root.knob('fps').getValue()
+
+    def set_frame_rate(self, fps):
+        import nuke
+        root = nuke.root()
+        return root.knob('fps').setValue(fps)
 
     def get_qt_parent(self):
         from Qt import QtWidgets
