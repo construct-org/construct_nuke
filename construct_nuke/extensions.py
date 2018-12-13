@@ -89,6 +89,7 @@ class Nuke(HostExtension):
         root.knob('last_frame').setValue(max)
         viewer = nuke.activeViewer().node()
         viewer['frame_range'].setValue('%d-%d' % (start, end))
+        viewer['frame_range_lock'].setValue(True)
 
     def get_frame_rate(self):
         import nuke
