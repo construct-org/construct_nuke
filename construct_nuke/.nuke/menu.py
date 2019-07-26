@@ -22,10 +22,11 @@ if utils.show_file_open_at_startup():
     # to nuke. Maybe...construct.interact('file.open')?
     host = construct.get_host()
     ctx = construct.get_context()
+
     if ctx.workspace and not host.get_filename():
-        action = construct.actions.get('file.open')
-        parent = host.get_qt_parent()
-        form_cls = construct.get_form(action.identifier)
-        form = form_cls(action, ctx, parent)
-        form.setStyleSheet(resources.style(':/styles/dark'))
-        form.show()
+        if ctx.workspace.get_work_files():
+            action_identifier = 'file.open'
+        else:
+            action_identifier = 'file.save'
+
+        construct.show_form(action_identifier)
