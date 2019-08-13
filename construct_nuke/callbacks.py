@@ -13,7 +13,6 @@ def on_script_save():
     import nuke
     _log.debug('on_script_save')
     set_context_to_nuke_script()
-    set_favorite_dirs()
 
 
 def on_script_load():
@@ -22,7 +21,6 @@ def on_script_load():
     import nuke
     _log.debug('on_script_load')
     set_context_to_nuke_script()
-    set_favorite_dirs()
 
 
 def set_context_to_nuke_script():
@@ -46,23 +44,7 @@ def set_context_to_nuke_script():
             'Script is not in a construct workspace...'
         )
 
-
-def set_favorite_dirs():
-    '''Sets up favorite directories for current context'''
-    import nuke
-
-    _log.debug('setting favorite dirs')
-
-    ctx = construct.get_context()
-    if ctx.workspace:
-        nuke.addFavoriteDir(
-            'Workspace',
-            ctx.workspace.path,
-            nuke.IMAGE | nuke.SCRIPT,
-            'Current construct workspace'
-        )
-
-    # TODO: Add renders directory
+    host.set_workspace(path)
 
 
 def register():

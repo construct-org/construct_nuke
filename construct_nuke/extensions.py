@@ -4,6 +4,7 @@ from __future__ import absolute_import
 __all__ = ['Nuke']
 
 from os.path import join, dirname, basename
+import construct
 from construct.extension import HostExtension
 from construct_nuke.tasks import (
     setup_construct_nuke
@@ -18,7 +19,7 @@ class Nuke(HostExtension):
     template and a launch task.
     '''
 
-    name = 'Nuke'
+    name = 'nuke'
     attr_name = 'nuke'
 
     def available(self, ctx):
@@ -59,10 +60,17 @@ class Nuke(HostExtension):
             node.setSelected(True)
 
     def get_workspace(self):
-        pass
+        import nuke
+        return dirname(nuke.root().name())
 
     def set_workspace(self, directory):
-        pass
+        import nuke
+        nuke.addFavoriteDir(
+            'Workspace',
+            directory,
+            nuke.IMAGE | nuke.SCRIPT,
+            'Current construct workspace'
+        )
 
     def get_filepath(self):
         import nuke
