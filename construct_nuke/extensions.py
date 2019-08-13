@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 __all__ = ['Nuke']
 
+import os
 from os.path import join, dirname, basename
 import construct
 from construct.extension import HostExtension
@@ -61,16 +62,33 @@ class Nuke(HostExtension):
 
     def get_workspace(self):
         import nuke
-        return dirname(nuke.root().name())
+        return nuke.root()['project_directory'].getValue()
 
     def set_workspace(self, directory):
         import nuke
-        nuke.addFavoriteDir(
-            'Workspace',
-            directory,
-            nuke.IMAGE | nuke.SCRIPT,
-            'Current construct workspace'
-        )
+        from construct_ui import resources
+
+        ctx = construct.get_context()
+        fav_icon = resources.path(':/brand/construct_icon-white-on-black')
+        favs = ['project', 'sequence', 'shot', 'asset', 'workspace']
+
+        for fav in favs:
+            fav_name = fav.title()
+            nuke.removeFavoriteDir(fav_name)
+
+            entry = ctx[fav]
+            if entry:
+                directory = entry.path
+                nuke.addFavoriteDir(
+                    fav_name,
+                    directory=directory,
+                    type=(nuke.IMAGE | nuke.SCRIPT | nuke.GEO),
+                    icon=fav_icon,
+                    tooltip=directory
+                )
+
+        os.chdir(directory)
+        nuke.root()['project_directory'].setValue(directory)
 
     def get_filepath(self):
         import nuke

@@ -37,6 +37,7 @@ def set_context_to_nuke_script():
     if new_ctx.workspace:
         _log.debug('Setting context to %s' % path)
         construct.set_context(new_ctx)
+        host.set_workspace(new_ctx.workspace.path)
         new_ctx.to_env()
     else:
         _log.debug(
@@ -44,7 +45,6 @@ def set_context_to_nuke_script():
             'Script is not in a construct workspace...'
         )
 
-    host.set_workspace(path)
 
 
 def register():
