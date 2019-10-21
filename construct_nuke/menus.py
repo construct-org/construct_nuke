@@ -10,7 +10,7 @@ def get_nuke_menubar():
     '''
 
     from Qt import QtWidgets
-    for widget in QtWidgets.QApplication.instance().allWidgets():
+    for widget in QtWidgets.QApplication.allWidgets():
         if isinstance(widget, QtWidgets.QMenuBar):
             return widget
 

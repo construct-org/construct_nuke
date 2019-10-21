@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function
 
 __title__ = 'construct_nuke'
 __description__ = 'Construct for Nuke'
-__version__ = '0.1.9'
+__version__ = '0.1.10'
 __author__ = 'Dan Bradham'
 __email__ = 'danielbradham@gmail.com'
 __license__ = 'MIT'
